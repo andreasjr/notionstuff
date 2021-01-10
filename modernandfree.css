@@ -1,0 +1,124 @@
+
+body {
+    margin-top:30px;
+}
+div#nysics-navbar {
+    display:block;
+    position:fixed;
+    top:0px;
+    left:0px;
+    width:100%;
+    height:auto;
+    background-color: white;
+    border-bottom: solid 1px #E7E7E7;
+    z-index:2;
+}
+div#nysics-navbar ul {
+    padding: 0px;
+    margin: 0px;
+    list-style: none;
+}
+div#nysics-navbar ul li {
+    display: inline-block;
+    vertical-align: middle;
+    margin:5px 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    box-sizing: border-box;
+}
+
+div#nysics-navbar a {
+    display:block;
+    color: #000000;
+    background-color: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    height:100%;
+    width:100%;
+    padding: 5px 10px;
+    transition: color .2s ease;
+    box-sizing: border-box;
+}
+div#nysics-navbar a:hover {
+color: #24AFFF;
+}
+
+div.notion-topbar, div.notion-topbar-mobile, .notion-navbar, .notion-code.no-wrap {
+    display: none !important;
+    }
+
+/* Header Container */
+#notion-app > div > div.notion-cursor-listener > div > div.notion-scroller.vertical.horizontal > div:nth-child(1), .notion-header {
+    min-height: 30vh;
+    height:auto;
+    width: 90% !important;
+    position: relative;
+    margin:20px auto !important;
+    flex-direction: row !important;
+}
+
+/* Header Image Container */
+    #notion-app > div > div.notion-cursor-listener > div > div.notion-scroller.vertical.horizontal > div:nth-child(1) > div:nth-child(1) {
+    z-index: -1;
+    position: absolute !important;
+    top:0px;
+    left:0px;
+    border-radius: 0px 0px 50px 50px;
+    overflow: hidden;
+    width: 100% !important;
+    height: 100% !important;
+    background-color:black;
+}
+
+/* Header Image Parent */
+#notion-app > div > div.notion-cursor-listener > div > div.notion-scroller.vertical.horizontal > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) {
+        height: inherit !important;
+}
+/* Header Image */
+#notion-app > div > div.notion-cursor-listener > div > div.notion-scroller.vertical.horizontal > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div > img {
+        height:100% !important;
+        object-fit: center center !important;
+        opacity:0.7 !important;
+        filter: blur(20px);
+        transform: scale(1.5);
+}
+
+/* Header Text Container */
+#notion-app > div > div.notion-cursor-listener > div > div.notion-scroller.vertical.horizontal > div:nth-child(1) > div:nth-child(2), .notion-header__content {
+    text-align: center;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+    color: white !important;
+    width:100% !important;
+    text-shadow: 0px 3px 10px rgba(0,0,0,.5);
+}
+
+/* Header Icon */
+#notion-app > div > div.notion-cursor-listener > div > div.notion-scroller.vertical.horizontal > div:nth-child(1) > div > div.notion-record-icon.notranslate {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-top:0px !important;
+}
+
+/* Header Text */
+#notion-app > div > div.notion-cursor-listener > div > div.notion-scroller.vertical.horizontal > div:nth-child(1) > div > div.notion-selectable.notion-page-block {
+    color: inherit !important;
+    text-align: center !important;
+}
+
+/* Page Properties */
+#notion-app > div > div.notion-cursor-listener > div > div.notion-scroller.vertical.horizontal > div:nth-child(2),
+#notion-app > div > div.notion-cursor-listener > div > div.notion-scroller.vertical.horizontal > div:nth-child(1) > div:nth-child(2) > div.notion-page-controls {
+    display: none !important;
+}
+
+/* Page Controls */
+.notion-page-controls {
+    display: none !important;
+}
+
+/* Page Block */
+.notion-page-block {
+
+}
