@@ -28,7 +28,7 @@ var loadHeaderVideo = function() {
         json = JSON.parse(input);
         console.log(json.videoBackground)
 
-        var iframe = createElementFromHTML('<div class="nysics-videobackground"><iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0" type="text/html" src="https://www.youtube.com/embed/'+json.videoBackground+'?playlist='+json.videoBackground+'&autohide=1&autoplay=1&controls=0&enablejsapi=0&iv_load_policy=3&loop=1&modestbranding=1&playsinline=1&rel=0&showinfo=0&wmode=opaque&widgetid=1"></iframe></div>');
+        var iframe = createElementFromHTML('<div class="nysics-videobackground"><div class="videoblocker"></div><iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0" type="text/html" src="https://www.youtube.com/embed/'+json.videoBackground+'?playlist='+json.videoBackground+'&autohide=1&autoplay=1&controls=0&enablejsapi=0&iv_load_policy=3&loop=1&modestbranding=1&playsinline=1&rel=0&showinfo=0&wmode=opaque&widgetid=1"></iframe></div>');
 
         header.appendChild(iframe);
     }
