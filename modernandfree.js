@@ -40,7 +40,6 @@ var loadHeaderVideo = function() {
 }
 
 var navload = function() {
-  console.log('Navload');
   var next = $('#__next > div');
   var nysicsNav = $('<div class="nysics-navbar"></div>');
   var navlist = $('<ul class="navlist"></ul>');
@@ -52,17 +51,17 @@ var navload = function() {
   // Link List Parser
   var linkFromArray = function (links) {
     for(let link of links) {
-      $(linkList).append('<li><a class="notion-link link" href="'+link[1]+'">'+link[0]+'</a></li>')
-      console.log(link);
+      var target = link[2] ? ' target="' + link[2] +'"' : ''
+      $(linkList).append('<li><a class="notion-link link" href="'+link[1]+'"'+target+'>'+link[0]+'</a></li>')
     }
   }
   // Create Link List
   linkFromArray([
     ['Home', '/'],
     ['Services', '/services'],
-    ['Portfolio', '/portfolio'],
     ['Short Films', '/short-films'],
-    ['Contact', '/contact']
+    ['Contact', '/contact'],
+    ['Dashboard', 'https://dashboard.nysics.com', '_blank']
   ]);
 
   
@@ -87,11 +86,32 @@ var navload = function() {
   $(next).prepend(nysicsNav);
 }
 
+var footerLoad = function() {
+  var next = $('#__next > div');
+
+  var footerContainer = $('<div class="nysics-footer"></div>');
+  var footerListContainer = $('<ul class="footer-listcontainer"></ul>')
+  
+
+  $(next).append(footerContainer);
+  $(footerContainer).append(footerListContainer);
+
+  var addItems = function(items) {
+    for (let item of items) {
+      var li = $("<li></li>").append(item);
+      $(footerListContainer).append(li);
+    }
+  }
+  
+  addItems(['<p>Made with ♥ in Manchester, NH</p>',
+  '<a href="https://dashboard.nysics.com" class="notion-link link">Log into your Client Dashboard</a>']);
+}
 
 /* First Page Load */
 window.addEventListener('load', (event) => {
     loadHeaderVideo();
     navload();
+    footerLoad();
     var bT = document.getElementsByClassName('notion-text');
     console.log(bT.length)
     for (var i = 0; i > bT.length; i++) {
