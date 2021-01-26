@@ -31,6 +31,7 @@ h3 .notion-semantic-string {
 }
     :root {
     --navHeight:100px;
+    --button-radius: 40px;
     --color-nav-bg: rgba(20,20,20,.9);
     --color-highlight-default: #24AFFF;
 
@@ -134,7 +135,7 @@ div.nysics-navbar ul.navlist > li {
 }
 div.nysics-navbar .nysics-logo {
     margin:0px;
-    padding:15px 0px;
+    padding:12px 0px;
     font-size:0px;
     height:inherit;
 }
@@ -170,18 +171,24 @@ div.nysics-navbar a {
     background-color: none;
     border-radius: 5px;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 12px;
     height:100%;
     width:100%;
-    padding: 5px 10px;
-    transition: color .2s ease;
+    padding: 8px 10px;
+    transition: all .2s ease;
     box-sizing: border-box;
     letter-spacing:1.5px;
 }
+    div.nysics-navbar a.highlight {
+        border-radius:var(--button-radius);
+        border:solid 1px white;
+        color:white;
+        padding: 8px 15px;
+    }
     div.nysics-navbar a:hover {
         color: var(--color-highlight-default);
+        border-color:var(--color-highlight-default);
     }
-
 div.notion-topbar, div.notion-topbar-mobile, .notion-navbar, .notion-code.no-wrap {
     display: none !important;
 }
@@ -190,6 +197,10 @@ div.notion-topbar, div.notion-topbar-mobile, .notion-navbar, .notion-code.no-wra
     :root {
         --navHeight: 80px;
     }
+    div.nysics-navbar .nysics-logo {
+        padding:0px;
+    }
+
     div.nysics-navbar ul.navlist {
         padding:0px 1vw;
     }
@@ -211,7 +222,7 @@ div.notion-topbar, div.notion-topbar-mobile, .notion-navbar, .notion-code.no-wra
         z-index:8;
         height:100vh;
         width:100vw;
-        padding:0vh 0px;
+        padding:0vh 5vw;
         background-color:rgba(0,0,0,.9);
         flex-direction:column;
         box-sizing:border-box;
@@ -248,6 +259,9 @@ div.notion-topbar, div.notion-topbar-mobile, .notion-navbar, .notion-code.no-wra
         padding:20px;
         color:inherit;
         font-size:25px;
+    }
+    div.nysics-navbar a.highlight {
+        border-width:3px;
     }
 }
 
@@ -373,7 +387,7 @@ Notion Elements
     text-align: center;
     text-decoration: none !important;
     border: solid 2px var(--color-text-default-light);
-    border-radius:40px;
+    border-radius:var(--button-radius);
     padding: 10px 30px;
     color: var(--color-text-default-light);
     background-color: transparent;

@@ -51,8 +51,9 @@ var navload = function() {
   // Link List Parser
   var linkFromArray = function (links) {
     for(let link of links) {
-      var target = link[2] ? ' target="' + link[2] +'"' : ''
-      $(linkList).append('<li><a class="notion-link link" href="'+link[1]+'"'+target+'>'+link[0]+'</a></li>')
+      var target = link[2] ? ' target="' + link[2] +'"' : '';
+      var highlight = link[3] ? ' highlight' : '';
+      $(linkList).append('<li><a class="notion-link link'+highlight+'" href="'+link[1]+'"'+target+'>'+link[0]+'</a></li>')
     }
   }
   // Create Link List
@@ -60,8 +61,8 @@ var navload = function() {
     ['Home', '/'],
     ['Services', '/services'],
     ['Short Films', '/short-films'],
-    ['Contact', '/contact'],
-    ['Dashboard', 'https://dashboard.nysics.com', '_blank']
+    ['Dashboard', 'https://dashboard.nysics.com', '_blank'],
+    ['Contact', '/contact',,true]
   ]);
 
   
