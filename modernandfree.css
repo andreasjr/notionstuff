@@ -1,7 +1,7 @@
 /*<link rel="stylesheet" href="https://raw.githack.com/andreasjr/notionstuff/main/modernandfree.css">*/
 body {
-    margin-top:30px;
-    /*background-color: #212121 !important;
+    /*padding-top:var(--navHeight);
+    background-color: #212121 !important;
     color: white !important;*/
     font-family: upgrade-lights, sans-serif;
     font-weight:100;
@@ -25,14 +25,15 @@ h1 .notion-semantic-string {
     line-height:1em !important;
 }
 h2 .notion-semantic-string {
-    font-size:4.5vh !important;
-    line-height:1em !important;
-}
-h3 .notion-semantic-string {
     font-size:4vh !important;
     line-height:1em !important;
 }
+h3 .notion-semantic-string {
+    font-size:3.5vh !important;
+    line-height:1em !important;
+}
 :root {
+  --navHeight:100px;
   --color-text-default: #fff !important;
   --color-text-default-light: #b1b1b1 !important;
   --color-bg-default: #191919 !important;
@@ -57,50 +58,150 @@ div#__next div {
 }
 
 /* Nysics Navbar */
-div#nysics-navbar {
+div.nysics-navbar {
     display:block;
     position:fixed;
     top:0px;
     left:0px;
     width:100%;
-    height:auto;
-    background-color: white;
-    border-bottom: solid 1px #E7E7E7;
-    z-index:2;
+    height:var(--navHeight);
+    background-color: rgba(20,20,20,.9);
+    box-shadow:0px 10px 25px rgba(0,0,0,.5);
+    z-index:5;
+    backdrop-filter: blur(10px);
 }
-div#nysics-navbar ul {
-    padding: 0px;
+div.nysics-navbar ul.navlist {
+    padding: 0px 10vw;
     margin: 0px;
     list-style: none;
+    display:flex;
+    flex-direction:row;
+    flex-wrap:nowrap;
+    justify-content:space-between;
+    align-items:center;
+    height:inherit;
 }
-div#nysics-navbar ul li {
-    display: inline-block;
+
+div.nysics-navbar ul.navlist > li {
+    display: block;
     vertical-align: middle;
-    margin:5px 10px;
     font-weight: bold;
     text-transform: uppercase;
     box-sizing: border-box;
 }
+div.nysics-navbar .nysics-logo {
+    margin:0px;
+    padding:10px 0px;
+    font-size:0px;
+    height:inherit;
+}
+div.nysics-navbar .nysics-logo svg {
+    width:auto;
+    height:inherit;
+    vertical-align:middle
+}
+    div.nysics-navbar .nysics-logo path {
+        fill:white !important;
+    }
 
-div#nysics-navbar a {
+div.nysics-navbar ul.navlist li.linklistcont #togglebutton {
+    display:none;
+}
+div.nysics-navbar ul.navlist ul.linklist {
+    margin:0px;
+    padding:0px;
+    list-style:none;
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+}
+div.nysics-navbar ul.navlist ul.linklist li {
+
+
+}
+div.nysics-navbar ul.navlist ul.linklist li.linklist-close {
+    display:none;
+}
+
+div.nysics-navbar a {
     display:block;
-    color: #000000;
+    color: var(--color-text-default-light);
     background-color: none;
     border-radius: 5px;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 14px;
     height:100%;
     width:100%;
     padding: 5px 10px;
     transition: color .2s ease;
     box-sizing: border-box;
+    letter-spacing:1.5px;
 }
-div#nysics-navbar a:hover {
-    color: --color-highlight-default;
+div.nysics-navbar a:hover {
+    color: var(--color-highlight-default);
 }
 
 div.notion-topbar, div.notion-topbar-mobile, .notion-navbar, .notion-code.no-wrap {
     display: none !important;
+}
+
+@media only screen and (max-width: 425px) {
+    :root {
+        --navHeight: 80px;
+    }
+    div.nysics-navbar ul.navlist {
+        padding:0px 1vw;
+    }
+    
+    div.nysics-navbar ul.navlist li.linklistcont {
+        vertical-align:middle;
+    }
+    div.nysics-navbar ul.navlist li.linklistcont #togglebutton {
+        display:block;
+        vertical-align:middle;
+        font-size:25px;
+        line-height:1;
+        margin-right:5vw;
+    }
+    div.nysics-navbar ul.navlist ul.linklist {
+        position:fixed;
+        top:0px;
+        left:0px;
+        z-index:8;
+        height:100vh;
+        width:100vw;
+        background-color:rgba(0,0,0,.9);
+        flex-direction:column;
+        box-sizing:border-box;
+        align-self:center;
+        justify-content: center;
+        backdrop-filter: blur(12px);
+        overflow:auto;
+        display:none;
+    }
+        div.nysics-navbar ul.navlist ul.linklist.visible {
+            display:flex;
+        }
+    div.nysics-navbar ul.navlist ul.linklist li {
+        height:auto;
+        width:100%;
+        text-align:center;
+        color:white;
+    }
+    div.nysics-navbar ul.navlist ul.linklist li.linklist-close {
+        color:var(--color-text-red);
+        display:block;
+    }
+    div.nysics-navbar ul.navlist ul.linklist li a {
+        padding:20px;
+        color:inherit;
+    }
+    /*div.nysics-navbar ul.linklist li {
+        display:block;
+    }
+    div.nysics-navbar ul.linklist li a {
+        display:block;
+    }*/
 }
 
 /* Header Container */
@@ -151,10 +252,10 @@ div.notion-topbar, div.notion-topbar-mobile, .notion-navbar, .notion-code.no-wra
 .notion-header__title-wrapper {
     margin-top:0px !important;
     margin-bottom:0px !important;
-    padding:15vh 0px
+    padding:calc(15vh + var(--navHeight)) 0px 15vh 0px;
 }
      .notion-header__content.has-cover.no-icon .notion-header__title-wrapper {
-        padding:20vh 0px 10vh 0px;
+        padding:calc(20vh + var(--navHeight)) 0px 10vh 0px;
     }
     /* Icon */
     .notion-header__icon-wrapper.has-cover.has-icon-image, .notion-header__icon-wrapper.has-cover.has-icon, .notion-header__icon-wrapper.no-cover.has-icon {
