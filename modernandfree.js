@@ -61,7 +61,7 @@ var navload = function() {
     ['Home', '/'],
     ['Services', '/services'],
     ['Portfolio', '/portfolio'],
-    ['Short Films', '/shortfilms'],
+    ['Short Films', '/short-films'],
     ['Contact', '/contact']
   ]);
 
