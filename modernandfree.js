@@ -12,9 +12,9 @@ function createElementFromHTML(htmlString) {
 
 var loadPage = function() {
     var doc = document.getElementById('__next');
-    setTimeout(()=> {
+    //setTimeout(()=> {
     doc.classList.add('loaded');
-    },500);
+    //},500);
 }
 
 var loadHeaderVideo = function() {
@@ -40,6 +40,7 @@ var loadHeaderVideo = function() {
 }
 
 var navload = function() {
+  $('.notion-navbar').remove();
   var next = $('#__next > div');
   var nysicsNav = $('<div class="nysics-navbar"></div>');
   var navlist = $('<ul class="navlist"></ul>');
@@ -108,28 +109,54 @@ var footerLoad = function() {
   '<a href="https://dashboard.nysics.com" class="notion-link link">Log into your Client Dashboard</a>']);
 }
 
+var addHomeListener = function() {
+
+  function mCallback(mutations) {
+    console.log('mutations: ' + mutations);
+
+    for (let mutation of mutations) {
+      console.log('mutation: ' + mutation.type);
+      if (mutation.type === 'childList') {
+        console.log('Mutation Detected: A child node has been added or removed.');
+      }
+    }
+  }
+
+  //$('#__next .super-content > article')[0]
+  let superHeader = document.getElementsByClassName('super-content')[0],
+  options = {
+    attributes: true,
+    attributeFilter: ['id'],
+    childList: true,
+    subtree: true,
+    characterData: true
+  };
+
+  console.log('observe: ' + $(superHeader).attr('id'))
+
+  const observer = new MutationObserver(function() {
+      console.log('callback that runs when observer is triggered');
+    loadHeaderVideo();
+  });
+
+  observer.observe(superHeader, {childList: true, attributes: true});
+}
+
 /* First Page Load */
 window.addEventListener('load', (event) => {
-    loadHeaderVideo();
     navload();
     footerLoad();
-    var bT = document.getElementsByClassName('notion-text');
-    console.log(bT.length)
-    for (var i = 0; i > bT.length; i++) {
-        x = bT[i];
-        if (x.includes('[header]')) {
-        alert ('found')
-        }
-    }
+    loadHeaderVideo();
+    addHomeListener();
 })
 
 
 //Detect page load changes going backwards
 window.onpopstate = history.onpushstate = function(e) {
     document.getElementById('__next').classList.remove('loaded');
-    setTimeout(()=> {
+    /*//setTimeout(()=> {
     loadHeaderVideo();
-    }, 500);
+    //}, 500);*/
 }
 
 
@@ -140,8 +167,8 @@ history.pushState = function () {
 
     document.getElementById('__next').classList.remove('loaded');
     
-    setTimeout(()=> {
+    /*//setTimeout(()=> {
     loadHeaderVideo();
-    }, 500);
+    //}, 500);*/
 };
 })();

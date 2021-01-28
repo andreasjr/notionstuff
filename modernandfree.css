@@ -47,7 +47,7 @@ h3 .notion-semantic-string {
     --color-text-pink: #ad1a72;
     --color-text-red: #e03e3e;
 
-    --color-bg-default: #2b2b2b !important;
+    --color-bg-default: #292E30 !important;
     --color-bg-yellow: rgb(89, 86, 59) !important;
     --color-bg-blue: rgb(54, 73, 84) !important;
     --color-bg-green: rgb(53, 76, 75) !important;
@@ -263,6 +263,10 @@ div.notion-topbar, div.notion-topbar-mobile, .notion-navbar, .notion-code.no-wra
     div.nysics-navbar a.highlight {
         border-width:3px;
     }
+
+    .notion-text.bg-purple .notion-text__children {
+        padding:0vh 5vw 5vh 5vw !important;
+    }
 }
 
 /* Footer */
@@ -401,12 +405,12 @@ Notion Elements
     align-self:center;
     display:inline-block;
     margin-top:15px;
-    margin-bottom:15px;
-    margin-left:2px;
-    margin-right:2px;
+    margin-bottom:10px;
+    margin-left:0px;
+    margin-right:0px;
 }
     .bg-purple .notion-text.bg-pink a{
-        margin-right:15px;
+        margin-right:10px;
         margin-top: 0px;
         }
 
@@ -445,9 +449,9 @@ Notion Elements
         padding:0px;
         box-sizing: border-box;
         text-shadow: 0px 3px 25px rgba(0,0,0,.75);
-        background-color:rgba(0,0,0,.50);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
+        background-color:rgba(0,0,0,.20);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
 
     }
     .notion-image.full-width .notion-caption .notion-semantic-string {
@@ -514,7 +518,7 @@ Notion Elements
     }
 
 .notion-collection .notion-collection-card__content {
-    padding:0px;
+    padding:0px 5px;
     width:100%;
     background-color:var(--color-bg-darkgray);
     flex-grow:auto;
@@ -523,7 +527,7 @@ Notion Elements
 }
 
 .notion-collection .notion-collection-card__content .notion-semantic-string{
-    white-space:normal;
+    /* white-space:normal; */
     width:100%;
     display:block;
     padding:0px 10px;
@@ -531,15 +535,15 @@ Notion Elements
     color:gray !important;
 }
 .notion-collection .notion-collection-card__content .notion-collection-card__property {
-    padding: 10px 0px;
+    padding: 7px 0px;
     display:inline-block;
-    vertical-align:top;
+    vertical-align:middle;
 }
 .notion-collection .notion-collection-card__content .notion-collection-card__property .notion-property__select {
     margin:0px;
     padding:0px;
     justify-content:center;
-    flex-wrap:nowrap;
+    flex-wrap:wrap;
 }
 .notion-collection .notion-collection-card__content .notion-collection-card__property .notion-property__select span {
     max-width:fit-content;
@@ -547,8 +551,8 @@ Notion Elements
     /*background-color:transparent;*/
     white-space:nowrap;
     text-overflow:unset;
-    margin-top:0px;
-    margin-bottom:0px;
+    margin-top:2px;
+    margin-bottom:2px;
 }
 /* Price Property */
 .notion-collection .property-66495149 {
@@ -564,7 +568,9 @@ Notion Elements
     border-radius:5px;
     color:white;
 }
-
+.notion-collection .property-3d5d7260 {
+    text-align:left;
+}
 
 
 /* Notion Backgrounds */
@@ -667,9 +673,9 @@ body.home .notion-header__content {
         position:absolute;
         bottom:0vh;
         left:0vw;
-        padding:15vh 10vw;
+        padding: 15vh 8vw;
         width:100vw;
-        max-width:800px;
+        max-width: 800px;
     }
     .notion-text.bg-purple .notion-text__children .notion-text p {
         display: inline-block;
