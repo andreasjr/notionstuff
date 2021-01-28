@@ -123,7 +123,7 @@ var addHomeListener = function() {
   }
 
   //$('#__next .super-content > article')[0]
-  let superHeader = document.getElementsByClassName('super-content')[0],
+  let superHeader = document.getElementsByClassName('notion-header__title')[0],
   options = {
     attributes: true,
     attributeFilter: ['id'],
@@ -136,10 +136,11 @@ var addHomeListener = function() {
 
   const observer = new MutationObserver(function() {
       console.log('callback that runs when observer is triggered');
-    loadHeaderVideo();
+    setTimeout(function(){
+      loadHeaderVideo();}, 200);
   });
 
-  observer.observe(superHeader, {childList: true, attributes: true});
+  observer.observe(superHeader, {childList: true, attributes: true, characterData: true, subtree: true});
 }
 
 /* First Page Load */
