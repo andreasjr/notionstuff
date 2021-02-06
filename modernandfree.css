@@ -41,6 +41,8 @@ h3 .notion-semantic-string {
 :root {
     --navHeight:100px;
     --button-radius: 40px;
+    --contentMaxWidth: 1200px;
+    --defaultOuterPadding: calc(env(safe-area-inset-left) + 96px);
     --color-nav-bg: rgba(20,20,20,.9);
     --color-highlight-default: #24AFFF;
 
@@ -66,7 +68,7 @@ h3 .notion-semantic-string {
     --color-bg-darkgray: rgba(20,20,20,1);
     --color-bg-brown: rgb(74 67 63) !important;
     --color-bg-orange: rgb(156 101 12) !important;
-    --color-bg-purple: #4f3571 !important;
+    --color-bg-purple: #4f3571 !important; /*#4f3571*/
     --color-bg-pink: #f4dfeb !important;
     --color-bg-red: #8c2d2d !important;
     --color-bg-gray-light: rgb(30, 30, 30, .3) !important;
@@ -93,6 +95,10 @@ h3 .notion-semantic-string {
 
     --color-border-default: rgb(43 43 43 / 80%) !important;
 }
+::selection {
+    color:black;
+    background-color: var(--color-highlight-default) !important;
+}
 strong {
     font-weight: 600 !important;
     letter-spacing: .5px;
@@ -111,7 +117,7 @@ body div#__next > div {
     padding-bottom:10vh !important;
 }
 .super-content.max-width {
-    max-width:1200px !important;
+    max-width:var(--contentMaxWidth) !important;
 }
 
 
@@ -143,7 +149,7 @@ div.nysics-navbar ul.navlist {
     justify-content:space-between;
     align-items:center;
     height:inherit;
-    max-width:1200px;
+    max-width:var(--contentMaxWidth);
 }
 
 div.nysics-navbar ul.navlist > li {
@@ -232,7 +238,7 @@ div.nysics-footer ul {
     list-style: none;
     padding:none;
     margin:0px auto;
-    max-width:1200px;
+    max-width:var(--contentMaxWidth);
     padding:0px;
     display:block;
     cursor: default;
@@ -264,7 +270,7 @@ div.nysics-footer ul.footer-listcontainer li .sep {
     position:relative;
     margin-bottom:0px !important;
 }
-.notion-header.home {
+.notion-header.home, .contains-hero .notion-header {
     display:none;
 }
 .notion-header__cover.no-cover {
@@ -304,7 +310,7 @@ div.nysics-footer ul.footer-listcontainer li .sep {
 
 }
 .notion-header__content.max-width {
-    max-width:1200px !important;
+    max-width:var(--contentMaxWidth) !important;
 }
 .notion-header__content.has-cover.no-icon {
     
@@ -347,7 +353,7 @@ Notion Elements
     text-align: center;
     display:block;
 }
-    #block-6e10a4d70e824f789ef6c6b5b76b0632 .notion-text.bg-pink{
+    #block-6e10a4d70e824f789ef6c6b5b76b0632 .notion-text.bg-pink, .n-hero .notion-text.bg-pink{
         display: inline-block;
     }
 .notion-text.bg-pink a {
@@ -374,7 +380,7 @@ Notion Elements
     text-shadow:0px 1px 3px rgba(0,0,0,.3);
     box-shadow:0px 1px 3px rgba(0,0,0,.3);
 }
-    #block-6e10a4d70e824f789ef6c6b5b76b0632 .notion-text.bg-pink a{
+    #block-6e10a4d70e824f789ef6c6b5b76b0632 .notion-text.bg-pink a, .n-hero .notion-text.bg-pink a{
         margin-right:10px;
         margin-top: 0px;
         }
@@ -626,7 +632,23 @@ Notion Elements
 
 
 
-/* Table of Contents / Secondary Navigation */
+/* 
+**                  **
+**  Nysics Modules  **
+**                  **
+*/
+.n-module__parent > .notion-text__content, .notion-text.bg-purple > .notion-text__content {
+    display:none;
+}
+.notion-toggle.bg-purple {
+    display:none;
+}
+.n-module__parent > .notion-text__children {
+    margin-left:0px;
+}
+
+
+/* Table of Contents */
 ul.notion-table-of-contents {
     background-color:var(--color-bg-gray);
 }
@@ -636,6 +658,8 @@ ul.notion-table-of-contents li {
 ul.notion-table-of-contents li a div {
     margin-left:0px !important;
 }
+
+/* Secondary Navigation */
 
 .n-menunav {
     position:sticky;
@@ -656,9 +680,9 @@ ul.notion-table-of-contents li a div {
     display: none;
 }
 .n-menunav .notion-text__children {
-    margin:0px auto;
+    margin:0px auto !important;
     display:flex;
-    max-width:1200px;
+    max-width:var(--contentMaxWidth);
     padding:15px 10px;
     flex-direction:row;
     flex-wrap:wrap;
@@ -704,38 +728,58 @@ ul.notion-table-of-contents li a div {
 }
 
 
-/* Home Header block */
-#block-6e10a4d70e824f789ef6c6b5b76b0632 {
-    margin:0px;
-    padding:0px;
-    height:87vh;
-    width:100vw;
+/* Section */
+.n-section {
     align-self:center;
-    background:none !important;
+    width:100vw;
+    margin:5vh 0px;
+    padding:5vh 0px;
+    background-color: var(--color-bg-gray);
+}
+.notion-column > .n-section {
+    width:100%;
+}
+.n-section .notion-text__children {
+    max-width: var(--contentMaxWidth);
+    margin: 0px auto;
+    padding-left: var(--defaultOuterPadding);
+    padding-right: var(--defaultOuterPadding);
     position:relative;
     z-index:2;
-    /* overflow: hidden !important; */
 }
-    #block-6e10a4d70e824f789ef6c6b5b76b0632 > p {
-        display:none;
-    }
-    #block-6e10a4d70e824f789ef6c6b5b76b0632 .notion-text__children {
-        padding:0px;
-        margin: 0px auto;
-        height:auto;
-        padding: 5vh 10vw;
-        max-width: 900px;
-        position:absolute;
-        bottom:0px;
-        left:0px
-    }
-    #block-6e10a4d70e824f789ef6c6b5b76b0632 .notion-text__children .notion-text p {
-        display: inline-block;
-    }
 
-    #block-6e10a4d70e824f789ef6c6b5b76b0632 .notion-text.bg-pink a {
-        margin-top:10px;
+
+/* Cards */
+.n-card {
+    border-radius:10px;
+    padding:20px;
+    border:solid 1px var(--color-bg-gray);
+    box-shadow:0px 3px 40px rgba(0,0,0,.5);
+    overflow:hidden;
+    transform:scale(1);
+    transition:.2s ease-in-out transform;
+    --cardZoom: .05;
+}
+    .n-card:hover {
+        transform:scale(calc( 1 + var( --cardZoom ) ) );
     }
+    .n-card:hover > .notion-text__children{
+        transform:scale(calc(1 - var(--cardZoom)));
+    }
+.n-card .notion-column {
+    padding:0px;
+}
+.notion-column-list.contains-card > .notion-column {
+    --column-spacing: 20px;
+}
+.n-card > .notion-text__children {
+    transform:scale(1);
+    transition:.2s ease-in-out transform;
+}
+
+
+
+/* Background Video */
 .nysics-videobackground {
     height:100%;
     width:100%;
@@ -787,9 +831,87 @@ ul.notion-table-of-contents li a div {
         z-index:1;
     }
 
-.notion-toggle.bg-purple {
+
+/* Background Image + Video */
+
+.contains-backgroundvideo, .contains-backgroundimage {
+    position:relative;
+}
+    .contains-backgroundvideo > .notion-text__children, .contains-backgroundimage > .notion-text__children {
+        z-index:2;
+        position:relative;
+    }
+.contains-backgroundvideo .n-backgroundimage {
     display:none;
 }
+
+.n-backgroundvideo, .n-backgroundimage {
+    display:block;
+    position:absolute;
+    top:0px;
+    left:0px;
+    height:100%;
+    width:100%;
+    z-index:1;
+}
+.n-backgroundvideo .videoblocker, .n-backgroundimage .imageblocker {
+    display:block;
+    height:100%;
+    width:100%;
+    position:absolute;
+    top:0px;
+    left:0px;
+    z-index:2;
+}
+.n-backgroundvideo iframe {
+    display:block;
+    width:100%;
+    height:100%;
+    opacity:.3;
+}
+.n-backgroundimage img{
+    display:block;
+    height:100%;
+    width:100%;
+    object-fit:cover;
+    opacity:.3;
+}
+
+
+/* Home Header block */
+#block-6e10a4d70e824f789ef6c6b5b76b0632, .n-hero {
+    margin:0px;
+    padding:0px;
+    height:87vh;
+    width:100vw;
+    align-self:center;
+    background:none !important;
+    position:relative;
+    z-index:2;
+    /* overflow: hidden !important; */
+}
+    #block-6e10a4d70e824f789ef6c6b5b76b0632 > p {
+        display:none;
+    }
+    #block-6e10a4d70e824f789ef6c6b5b76b0632 .notion-text__children, .n-hero .notion-text__children {
+        padding:0px;
+        margin: 0px auto;
+        height:auto;
+        padding: 5vh 10vw;
+        max-width: 900px;
+        position:absolute;
+        bottom:0px;
+        left:0px
+    }
+    #block-6e10a4d70e824f789ef6c6b5b76b0632 .notion-text__children .notion-text p, .n-hero .notion-text__children .notion-text p {
+        display: inline-block;
+    }
+
+    #block-6e10a4d70e824f789ef6c6b5b76b0632 .notion-text.bg-pink a, .n-hero .notion-text.bg-pink {
+        margin-top:10px;
+    }
+
+
 
 
 @media only screen and (max-width: 767px) {
@@ -801,6 +923,7 @@ ul.notion-table-of-contents li a div {
     }
     :root {
         --navHeight: 80px;
+        --defaultOuterPadding: calc(env(safe-area-inset-left) + 24px);
     }
 
     /* Facebook */
@@ -893,6 +1016,14 @@ ul.notion-table-of-contents li a div {
     }
 
     /* Home Block */
+
+    .contains-backgroundvideo .n-backgroundimage {
+        display:block;
+    }
+    .n-backgroundvideo {
+        display:none;
+    }
+
     .nysics-videobackground img {
         display:block;
     }
