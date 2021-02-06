@@ -12,7 +12,9 @@ function createElementFromHTML(htmlString) {
 var pageModules = {
     root: 'body',
     parentClasses: [
-        'menunav'
+        'menunav',
+        'hero',
+        'slideshow'
     ]
 };
 
@@ -26,12 +28,33 @@ pageModules.clearHeader = function(){
 
 pageModules.addTitle = function(content, target) {
     if(content.hasOwnProperty('title')) {
-        $(target).find('.notion-text__children').prepend('<div class="notion-text n-text-title"><p class="notion-text__content"><span class="notion-semantic-string"><strong>' + content.title + '</strong></span></p></div>');
+        $(target).find('> .notion-text__children').prepend('<div class="notion-text n-text-title"><p class="notion-text__content"><span class="notion-semantic-string"><strong>' + content.title + '</strong></span></p></div>');
     }
 }
 
+pageModules.addVideoBackground = function(videoID) {
+    return $('<div class="n-backgroundvideo"><div class="videoblocker"></div><iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0" id="nysics-videobackground-iframe" type="text/html" src="https://www.youtube.com/embed/'+videoID+'?playlist='+videoID+'&autohide=1&autoplay=1&controls=0&enablejsapi=1&iv_load_policy=3&loop=1&modestbranding=1&playsinline=1&rel=0&showinfo=0&wmode=opaque&widgetid=1&mute=1&origin=http://nysics.com"></iframe></div>');
+
+}
+pageModules.addImageBackground = function(imageURL, parent) {
+  var image;
+
+  if (imageURL == 'first') {
+    var thisimage = $(parent).find('.notion-text__children img');
+    
+    image = $(thisimage).attr('src');
+    $(thisimage).remove();
+  }
+  else image = imageURL;
+    return $('<div class="n-backgroundimage"><div class="imageblocker"></div><img src="'+image+'"></div>');
+
+}
+
 pageModules.jsonParse = function(jsonPrep, parent) {
+    try {
     json = JSON.parse(jsonPrep);
+    }
+    catch { return; }
 
     //If the property Type exists
     if(json.hasOwnProperty('type')) {
@@ -39,32 +62,72 @@ pageModules.jsonParse = function(jsonPrep, parent) {
         $(parent).addClass('n-'+json.type);
         pageModules.addTitle(json, parent);
         
+        // Add Type value as a class to page root if it's in the databank
         $(pageModules.parentClasses).each(function(i){
             if(json.type == pageModules.parentClasses[i]) {
                 $(pageModules.root).addClass('contains-' + pageModules.parentClasses[i]);
             }
         })
+
+        //Conditions for certain types
+
+        // Cards
+        if (json.type == "card") {
+          $(parent).parents('.notion-column-list').addClass('contains-' + json.type)
+        }
+    }
+
+    //If the property has 'styles'
+    if(json.hasOwnProperty('styles')) {
+
+        //Background Color Style
+        if (json.styles.hasOwnProperty('backgroundColor')) {
+            $(parent).addClass('bg-' + json.styles.backgroundColor)
+        }
+
+        //Background Video Style
+        if (json.styles.hasOwnProperty('backgroundVideo') && json.styles.backgroundVideo != "") {
+            $(parent).addClass('contains-backgroundvideo');
+            $(parent).append(pageModules.addVideoBackground(json.styles.backgroundVideo))
+        }
+
+        //Background Image Style
+        if (json.styles.hasOwnProperty('backgroundImage') && json.styles.backgroundImage != "") {
+            $(parent).addClass('contains-backgroundimage');
+            $(parent).append(pageModules.addImageBackground(json.styles.backgroundImage, parent))
+        }
+        
+        $(pageModules.parentClasses).each(function(i){
+            if(json.type == pageModules.parentClasses[i]) {
+                $(pageModules.root).addClass('contains-' + pageModules.parentClasses[i]);
+            }
+        })
+
     }
 }
 
 /* Search the page for bg-purple, pass it to JSON parse */
 pageModules.search = function() {
-    $('.notion-text.bg-purple').each(function(index) {
+    $('.notion-root .notion-text').each(function(index) {
         
         var sV = '!${'; // search variable
-
-        var tE = $(this).find(":contains('"+ sV + "')")[0]; // text
-        console.log($(tE).text());
-
-        t = $(tE).text();
-        if (t.indexOf(sV) >= 0) {
-            $(tE).remove();
+        
+        //See if this block contains a text block with the variable
+        var tE = $(this).find(":contains('"+ sV + "')")[0]; // Find first child block with variable
+        //console.log($(tE).text());
+        
+        //TODO: Add catch try block?
+        t = $(tE).text(); //Get JUST the text
+        if (t.indexOf(sV) >= 0) { //Verify the text does exist. If it does, parse it.
+            $(tE).remove(); //Remove the block with the variable
             var t2 = t.indexOf('}');
-            var jsonPrep = t.slice(t.indexOf(sV)+3, t2);
+            var jsonPrep = t.slice(t.indexOf(sV)+3, t.length-1);
             jsonPrep = '{' + jsonPrep + '}';
-
+            
+            $(this).addClass('n-module__parent');
             pageModules.jsonParse(jsonPrep, this);
         }
+        else return;
         
     })
 }
@@ -87,7 +150,7 @@ var loadHeaderVideo = function() {
         var homecover = $('.notion-header__cover.has-cover');
         if (typeof(homecover) != undefined && homecover != null) {
             homecover = $('.notion-header__cover img').attr('src');
-            console.log(homecover)
+            //console.log(homecover)
         }
         
         //Parse Information
