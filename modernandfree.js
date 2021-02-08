@@ -15,8 +15,23 @@ var pageModules = {
         'menunav',
         'hero',
         'slideshow'
-    ]
+    ],
+    lightbox: $('<div class="n-lightbox"></div>')
 };
+
+pageModules.loadLightbox = function() {
+  $('body').prepend(pageModules.lightbox);
+  
+  $(pageModules.lightbox).append('<div class="n-lightbox__blocker"></div>').on("contextmenu",function(){
+       return false;
+    }); 
+  $(pageModules.lightbox).append('<span id="n-lightbox__close"><a>Close Lightbox &times;</a></span>')
+
+  $(pageModules.lightbox).on("click", function(){
+    $(this).removeClass('open');
+    $(this).find('img').remove();
+  })
+}
 
 pageModules.clearHeader = function(){
     $(pageModules.root).removeClass('loaded'); //unload page
@@ -32,18 +47,51 @@ pageModules.addTitle = function(content, target) {
     }
 }
 
-pageModules.addVideoBackground = function(videoID) {
-    return $('<div class="n-backgroundvideo"><div class="videoblocker"></div><iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0" id="nysics-videobackground-iframe" type="text/html" src="https://www.youtube.com/embed/'+videoID+'?playlist='+videoID+'&autohide=1&autoplay=1&controls=0&enablejsapi=1&iv_load_policy=3&loop=1&modestbranding=1&playsinline=1&rel=0&showinfo=0&wmode=opaque&widgetid=1&mute=1&origin=http://nysics.com"></iframe></div>');
+pageModules.addVideoBackground = function(videoID, parent) {
+    var parentX = $(parent).outerWidth(true);
+    var parentY = $(parent).outerHeight(true);
+    var parentRatio = parentX/parentY;
+    var vidRatio = 16/9;
+    var dimX, dimY;
+
+    //console.log('video parent: ' + parentX + ' x ' + parentY);
+    
+    if (vidRatio > parentRatio) { //If Parent Height is larger than Parent Width
+        //console.log('Height greater than width')
+        $(parent).addClass('n-backgroundvideo__focuswidth');
+        dimX = parentY * vidRatio;
+        dimY = parentY;
+
+    }
+    else {//If Parent Width is larger than Parent Height
+        //console.log('Width greater than height')
+        $(parent).addClass('n-backgroundvideo__focuswidth');
+        dimX = parentX;
+        dimY = parentX * vidRatio;
+    }
+        //console.log('iFrame dimension: ' + dimX + ' x ' + dimY)
+
+    return $('<div class="n-backgroundvideo"><div class="videoblocker"></div><iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0" id="nysics-videobackground-iframe" type="text/html" src="https://www.youtube.com/embed/'+videoID+'?playlist='+videoID+'&autohide=1&autoplay=1&controls=0&enablejsapi=1&iv_load_policy=3&loop=1&modestbranding=1&playsinline=1&rel=0&showinfo=0&wmode=opaque&widgetid=1&mute=1&origin=http://nysics.com" style="width:' + dimX + 'px; height:' + dimY + 'px;"></iframe></div>');
 
 }
 pageModules.addImageBackground = function(imageURL, parent) {
   var image;
 
   if (imageURL == 'first') {
-    var thisimage = $(parent).find('.notion-text__children img');
-    
+    var thisimage = $(parent).find('.notion-text__children .notion-image > div > img');
+    console.log('this image: ' + thisimage)
+        if (thisimage.attr('src') == undefined || thisimage.attr('src') == '') {
+            thisimage = $(parent).find('.notion-text__children .notion-image > picture > img');
+        }
+
     image = $(thisimage).attr('src');
-    $(thisimage).remove();
+    $(thisimage).parents('.notion-image').remove();
+  }
+  else if (imageURL == 'header') {
+    var headerSrc = $('.notion-header__cover.has-cover img').first().attr('src');
+    if (headerSrc != '' && headerSrc != undefined) {
+      image = headerSrc;
+    }
   }
   else image = imageURL;
     return $('<div class="n-backgroundimage"><div class="imageblocker"></div><img src="'+image+'"></div>');
@@ -53,8 +101,6 @@ pageModules.addImageBackground = function(imageURL, parent) {
 pageModules.jsonParse = function(jsonPrep, parent) {
     try {
     json = JSON.parse(jsonPrep);
-    }
-    catch { return; }
 
     //If the property Type exists
     if(json.hasOwnProperty('type')) {
@@ -85,16 +131,24 @@ pageModules.jsonParse = function(jsonPrep, parent) {
             $(parent).addClass('bg-' + json.styles.backgroundColor)
         }
 
-        //Background Video Style
-        if (json.styles.hasOwnProperty('backgroundVideo') && json.styles.backgroundVideo != "") {
-            $(parent).addClass('contains-backgroundvideo');
-            $(parent).append(pageModules.addVideoBackground(json.styles.backgroundVideo))
-        }
 
         //Background Image Style
         if (json.styles.hasOwnProperty('backgroundImage') && json.styles.backgroundImage != "") {
             $(parent).addClass('contains-backgroundimage');
-            $(parent).append(pageModules.addImageBackground(json.styles.backgroundImage, parent))
+            $(parent).append(pageModules.addImageBackground(json.styles.backgroundImage, parent));
+        }
+        
+        //Background Video Style
+        if (json.styles.hasOwnProperty('backgroundVideo') && json.styles.backgroundVideo != "") {
+            $(parent).addClass('contains-backgroundvideo');
+            var bgVid = json.styles.backgroundVideo;
+            setTimeout(function() {
+              $(parent).append(pageModules.addVideoBackground(bgVid, parent));
+            }, 100);
+            
+            setTimeout(function() {
+              $(parent).addClass('n-backgroundvideo__loaded');
+            },2000);
         }
         
         $(pageModules.parentClasses).each(function(i){
@@ -104,9 +158,11 @@ pageModules.jsonParse = function(jsonPrep, parent) {
         })
 
     }
+    }
+    catch { return; }
 }
 
-/* Search the page for bg-purple, pass it to JSON parse */
+/* Search the page for a json string, pass it to JSON parse */
 pageModules.search = function() {
     $('.notion-root .notion-text').each(function(index) {
         
@@ -130,6 +186,13 @@ pageModules.search = function() {
         else return;
         
     })
+
+    $('img').each(function(index) {
+      $(this).on("click", function() {
+        $(pageModules.lightbox).append('<img src="'+$(this).attr('src') + '">');
+        $(pageModules.lightbox).addClass('open');
+      })
+    });
 }
 
 
@@ -287,6 +350,7 @@ window.addEventListener('load', (event) => {
     navload();
     footerLoad();
     loadHeaderVideo();
+    pageModules.loadLightbox();
     pageModules.search();
     addMutationListener();
     addFacebook();
