@@ -103,6 +103,9 @@ strong {
     font-weight: 600 !important;
     letter-spacing: .5px;
 }
+img:hover {
+    cursor:zoom-in;
+}
 
 body div#__next > div {
     opacity:0 !important;
@@ -582,7 +585,7 @@ Notion Elements
 }
 
 /* Notion Divider */
- .notion-divider {
+.notion-divider {
     border-color:var(--color-bg-gray) !important;
     border-width:2px !important;
     margin:50px 0px !important;
@@ -651,13 +654,28 @@ Notion Elements
 /* Table of Contents */
 ul.notion-table-of-contents {
     background-color:var(--color-bg-gray);
+    padding:10px;
 }
+    ul.notion-table-of-contents:before {
+        content:"Contents: ";
+        color:var(--color-highlight-default);
+        text-transform:uppercase;
+        font-weight:600;
+    }
 ul.notion-table-of-contents li {
     display: inline-block;
 }
+
 ul.notion-table-of-contents li a div {
     margin-left:0px !important;
+    padding:0px 5px;
 }
+    ul.notion-table-of-contents li a {
+        transition:color .2s ease-in-out;
+    }
+    ul.notion-table-of-contents li a:hover {
+        color:var(--color-text-default);
+    }
 
 /* Secondary Navigation */
 
@@ -732,9 +750,10 @@ ul.notion-table-of-contents li a div {
 .n-section {
     align-self:center;
     width:100vw;
-    margin:5vh 0px;
+    margin:0px;
     padding:5vh 0px;
     background-color: var(--color-bg-gray);
+    border:solid 1px  var(--color-bg-gray);
 }
 .notion-column > .n-section {
     width:100%;
@@ -747,18 +766,30 @@ ul.notion-table-of-contents li a div {
     position:relative;
     z-index:2;
 }
-
+    .full-width .n-section .notion-text__children {
+        max-width: 100%;
+    }
+.notion-text:not(.n-section) + .n-section, .notion-bulleted-list +.n-section {
+    margin-top:5vh;
+}
+.n-section + .notion-divider {
+    border:none !important;
+    margin:5vh 0px !important;
+}
 
 /* Cards */
 .n-card {
+    --cardPadding: 20px;
+    --cardZoom: .05;
+    --cardZoomNeutral: calc(1 + calc(10 * var(--cardZoom)));
     border-radius:10px;
-    padding:20px;
+    padding:var(--cardPadding);
     border:solid 1px var(--color-bg-gray);
     box-shadow:0px 3px 40px rgba(0,0,0,.5);
     overflow:hidden;
     transform:scale(1);
     transition:.2s ease-in-out transform;
-    --cardZoom: .05;
+    cursor:default;
 }
     .n-card:hover {
         transform:scale(calc( 1 + var( --cardZoom ) ) );
@@ -777,6 +808,44 @@ ul.notion-table-of-contents li a div {
     transition:.2s ease-in-out transform;
 }
 
+.n-card .notion-heading {
+    margin-top:0px;
+    width: calc(100% + (var(--cardPadding))*2);
+    position:relative;
+    left:calc(-1 * var(--cardPadding));
+    bottom: calc(var(--cardPadding) * var(--cardZoomNeutral) + 2px);
+    background-color:rgba(255,255,255,.4);
+    color:black;
+    transform:scale(calc(1 + var(--cardZoom)));
+}
+.n-card .notion-heading .notion-semantic-string {
+    padding: calc(var(--cardPadding) * var(--cardZoomNeutral));
+    padding-bottom:0px;
+    width:100%;
+    display:block;
+}
+    .n-card .notion-heading .notion-semantic-string span {
+    }
+
+.notion-column .n-card {
+    height:100%;
+}
+    .notion-column .n-card .notion-text__children {
+        display:flex;
+        flex-flow:column;
+        align-items:stretch;
+        height:100%;
+        justify-content:flex-start;
+    }
+    .notion-column .n-card .notion-text__children .notion-text.bg-pink {
+        align-self:center;
+        margin:0px;
+        margin-top:auto;
+    }
+
+.n-card:hover .n-backgroundimage img {
+    /*filter:blur(5px);*/
+}
 
 
 /* Background Video */
@@ -841,8 +910,105 @@ ul.notion-table-of-contents li a div {
         z-index:2;
         position:relative;
     }
-.contains-backgroundvideo .n-backgroundimage {
+.n-backgroundvideo__loaded.contains-backgroundvideo .n-backgroundimage {
+    opacity:0;
+}
+
+
+/* Nysics Lightbox */
+.n-lightbox {
     display:none;
+    height:100vh;
+    width:100vw;
+    background-color:rgba(0,0,0,.8);
+    z-index:-1;
+    position:fixed;
+    top:0px;
+    left:0px;
+    padding:5vh 5vw;
+    backdrop-filter:blur(5px);
+    cursor:zoom-out;
+}
+    .n-lightbox.open {
+        z-index:20;
+        display:flex;
+        animation-name: n-lightboxOpen;
+        animation-duration: .5s;
+    }
+.n-lightbox .n-lightbox__blocker {
+    display:block;
+    position:absolute;
+    top:0px;
+    left:0px;
+    width:100%;
+    height:100%;
+    z-index:2;
+    cursor:zoom-out;
+}
+.n-lightbox img {
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    opacity:0;
+}
+    .n-lightbox.open img {
+    animation-name: n-lightboxOpenImg;
+    animation-duration: 1s;
+    animation-delay: 0s;
+    opacity:1;
+    cursor:zoom-out;
+    }
+.n-lightbox #n-lightbox__close {
+    display:block;
+    width:100%;
+    position:absolute;top:0px;left:0px;
+    padding:2vh 2vw;
+    text-align:right;
+    z-index:2;
+    background-color:rgba(0,0,0,.8);
+    text-transform:uppercase;
+    letter-spacing:1.4px;
+    color:var(--color-text-red);
+    cursor:default;
+}
+@keyframes n-lightboxOpen {
+  0% {
+    opacity:0;
+  }
+
+  100% {
+    opacity:1;
+  }
+}
+@keyframes n-lightboxOpenImg {
+  20% {
+    transform: scale(.85);
+    opacity:0;
+    filter:blur(5px);
+  }
+    80% {
+        
+    filter:blur(0px);
+    }
+  100% {
+    transform: scale(1);
+    opacity:1;
+  }
+}
+
+
+.contains-backgroundvideo .n-backgroundimage img {
+    animation-name: n-backgroundimageIn;
+    animation-duration: 3s;
+}
+@keyframes n-backgroundimageIn {
+  0% {
+    transform: scale(1.5);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 .n-backgroundvideo, .n-backgroundimage {
@@ -853,6 +1019,9 @@ ul.notion-table-of-contents li a div {
     height:100%;
     width:100%;
     z-index:1;
+    overflow:hidden;
+    opacity:1;
+    transition:opacity .2s ease-in-out;
 }
 .n-backgroundvideo .videoblocker, .n-backgroundimage .imageblocker {
     display:block;
@@ -867,14 +1036,23 @@ ul.notion-table-of-contents li a div {
     display:block;
     width:100%;
     height:100%;
-    opacity:.3;
+    opacity:0;
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform: translateX(-50%) translateY(-50%);
+    transition:all .2s ease-in-out;
 }
+    .n-backgroundvideo__loaded .n-backgroundvideo iframe {
+        opacity:.3;
+    }
 .n-backgroundimage img{
     display:block;
     height:100%;
     width:100%;
     object-fit:cover;
     opacity:.3;
+    transition: filter .2s ease-in-out;
 }
 
 
@@ -1017,8 +1195,9 @@ ul.notion-table-of-contents li a div {
 
     /* Home Block */
 
-    .contains-backgroundvideo .n-backgroundimage {
+    .n-backgroundvideo__loaded.contains-backgroundvideo .n-backgroundimage {
         display:block;
+        opacity:1;
     }
     .n-backgroundvideo {
         display:none;
