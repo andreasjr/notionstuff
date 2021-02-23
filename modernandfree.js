@@ -14,9 +14,11 @@ var pageModules = {
     parentClasses: [
         'menunav',
         'hero',
-        'slideshow'
+        'slideshow',
+        'toc'
     ],
-    lightbox: $('<div class="n-lightbox"></div>')
+    lightbox: $('<div class="n-lightbox"></div>'),
+    lightstrip: []
 };
 
 pageModules.loadLightbox = function() {
@@ -28,8 +30,13 @@ pageModules.loadLightbox = function() {
   $(pageModules.lightbox).append('<span id="n-lightbox__close"><a>Close Lightbox &times;</a></span>')
 
   $(pageModules.lightbox).on("click", function(){
-    $(this).removeClass('open');
-    $(this).find('img').remove();
+    $(this).addClass('closing');
+    thisI = this;
+    setTimeout(function() {
+        $(thisI).removeClass('open');
+        $(thisI).find('img').remove();
+        $(thisI).removeClass('closing');
+    },700);
   })
 }
 
@@ -37,7 +44,7 @@ pageModules.clearHeader = function(){
     $(pageModules.root).removeClass('loaded'); //unload page
     $(pageModules.parentClasses).each(function(index){
         $(pageModules.root).removeClass('contains-' + pageModules.parentClasses[index])
-        console.log(pageModules.parentClasses[index])
+        //console.log(pageModules.parentClasses[index])
     })
 }
 
@@ -79,7 +86,7 @@ pageModules.addImageBackground = function(imageURL, parent) {
 
   if (imageURL == 'first') {
     var thisimage = $(parent).find('.notion-text__children .notion-image > div > img');
-    console.log('this image: ' + thisimage)
+    //console.log('this image: ' + thisimage)
         if (thisimage.attr('src') == undefined || thisimage.attr('src') == '') {
             thisimage = $(parent).find('.notion-text__children .notion-image > picture > img');
         }
@@ -151,6 +158,55 @@ pageModules.jsonParse = function(jsonPrep, parent) {
             },2000);
         }
         
+
+        //Text Position Styles
+        if (json.styles.hasOwnProperty('textPosition') && json.styles.textPosition != "") {
+          //console.log("Type of: "+ typeof(json.styles.textPosition))
+          var textChildren = $(parent).find('.notion-text__children');
+
+          if (typeof(json.styles.textPosition) == "object") {
+
+            
+            var css = {};
+            var x,y,transformX,transformY;
+
+
+            //Prepare absolute positioning
+            if (json.styles.textPosition[0] == 'center') {
+              x = 'left';
+              transformX = "-50%";
+              css[x] = "50%"
+            }
+              else {
+                x = json.styles.textPosition[0];
+                transformX = "0px";
+                css[x] = "0px"
+              }
+
+            if (json.styles.textPosition[1] == 'middle') {
+                y = 'top';
+                transformY = "-50%";
+                css[y] = "50%"
+            }
+              else {
+                y = json.styles.textPosition[1];
+                transformY = "0px";
+                css[y] = "0px"
+              }
+
+            css["transform"] = 'translateX(' + transformX + ') translateY(' + transformY + ')';
+            css["position"] = "absolute";
+            //console.log("css: " + css.transform);
+
+            //Set absolute positioning
+            $(textChildren).addClass('custom-text-position')
+            $(textChildren).css(css);
+          }
+        }
+
+
+
+        // If n-type equals what's in pageModules.parentClasses, add "contains-x" to body
         $(pageModules.parentClasses).each(function(i){
             if(json.type == pageModules.parentClasses[i]) {
                 $(pageModules.root).addClass('contains-' + pageModules.parentClasses[i]);
@@ -186,13 +242,25 @@ pageModules.search = function() {
         else return;
         
     })
-
+    
+    /* Add Images to Lightbox */
+    //pageModules.lightbox = [];
     $('img').each(function(index) {
-      $(this).on("click", function() {
-        $(pageModules.lightbox).append('<img src="'+$(this).attr('src') + '">');
-        $(pageModules.lightbox).addClass('open');
-      })
+        //Add to Lightstrip
+        //pageModules.lightbox.push(this);
+
+      //Open Lightbox
+        $(this).on("click", function() {
+            $(pageModules.lightbox).append('<img src="'+$(this).attr('src') + '">');
+            $(pageModules.lightbox).addClass('open');
+        })
     });
+
+
+    /* Adjust Table of Contents */
+    if ($('ul.notion-table-of-contents.bg-purple').length) {
+      $('body').addClass('contains-toc');
+    }
 }
 
 
@@ -202,37 +270,6 @@ var loadPage = function() {
     //},100);
 }
 
-var loadHeaderVideo = function() {
-
-    var header = document.getElementById('block-6e10a4d70e824f789ef6c6b5b76b0632');
-    if(header != undefined && header != null) {
-
-        //Disable Home Header
-        var homeheader = document.getElementsByClassName('notion-header')[0].classList.add('home');
-
-        var homecover = $('.notion-header__cover.has-cover');
-        if (typeof(homecover) != undefined && homecover != null) {
-            homecover = $('.notion-header__cover img').attr('src');
-            //console.log(homecover)
-        }
-        
-        //Parse Information
-        var input = header.getElementsByTagName('p')[0].innerText;
-        input = input.slice(2, input.length-1);
-        //console.log(input);
-        json = JSON.parse(input);
-        //console.log(json.videoBackground)
-
-        var iframe = createElementFromHTML('<div class="nysics-videobackground"><div class="videoblocker"></div><iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0" id="nysics-videobackground-iframe" type="text/html" src="https://www.youtube.com/embed/'+json.videoBackground+'?playlist='+json.videoBackground+'&autohide=1&autoplay=1&controls=0&enablejsapi=1&iv_load_policy=3&loop=1&modestbranding=1&playsinline=1&rel=0&showinfo=0&wmode=opaque&widgetid=1&mute=1&origin=http://nysics.com"></iframe><img class="nysics-videobackground-img" src="' + homecover +'"></div>');
-
-        header.appendChild(iframe);
-    }
-    else {
-        var homeheader = document.getElementsByClassName('notion-header')[0].classList.remove('home');
-    }
-
-
-}
 
 var navload = function() {
   $('.notion-navbar').remove();
@@ -333,7 +370,6 @@ const observer = new MutationObserver(function() {
 
     setTimeout(function(){
         pageModules.search();
-        loadHeaderVideo();
         loadPage();
         }, 200);
     });
@@ -349,7 +385,6 @@ var addFacebook = function() {
 window.addEventListener('load', (event) => {
     navload();
     footerLoad();
-    loadHeaderVideo();
     pageModules.loadLightbox();
     pageModules.search();
     addMutationListener();
