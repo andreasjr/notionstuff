@@ -82,26 +82,30 @@ pageModules.addVideoBackground = function(videoID, parent) {
 
 }
 pageModules.addImageBackground = function(imageURL, parent) {
+
+  var nBGImage = $('<div class="n-backgroundimage"><div class="imageblocker"></div>'); //Structure
+
+
   var image;
+  //return;
 
   if (imageURL == 'first') {
-    var thisimage = $(parent).find('.notion-text__children .notion-image > div > img');
-    //console.log('this image: ' + thisimage)
-        if (thisimage.attr('src') == undefined || thisimage.attr('src') == '') {
-            thisimage = $(parent).find('.notion-text__children .notion-image > picture > img');
-        }
-
-    image = $(thisimage).attr('src');
-    $(thisimage).parents('.notion-image').remove();
+    var thisimageContainer = $(parent).find('.notion-image').first();
+    $(nBGImage).append(thisimageContainer);
   }
   else if (imageURL == 'header') {
     var headerSrc = $('.notion-header__cover.has-cover img').first().attr('src');
     if (headerSrc != '' && headerSrc != undefined) {
-      image = headerSrc;
+      $(nBGImage).append('<img src="'+headerSrc+'" class="toplevelimg">');
     }
   }
-  else image = imageURL;
-    return $('<div class="n-backgroundimage"><div class="imageblocker"></div><img src="'+image+'"></div>');
+  else $(nBGImage).append('<img src="'+imageURL+'" class="toplevelimg">');
+  
+
+  /* Structure */
+
+
+  return nBGImage;
 
 }
 
@@ -172,24 +176,24 @@ pageModules.jsonParse = function(jsonPrep, parent) {
 
 
             //Prepare absolute positioning
-            if (json.styles.textPosition[0] == 'center') {
-              x = 'left';
+            if (json.styles.textPosition[0] == 'center') { //if variable 0 is center, do this
+              x = 'left'; //force positioning to left
               transformX = "-50%";
               css[x] = "50%"
             }
-              else {
-                x = json.styles.textPosition[0];
+              else { //otherwise, left or right positioning will be the same (zero)
+                x = json.styles.textPosition[0]; // get 'left' or 'right'
                 transformX = "0px";
                 css[x] = "0px"
               }
 
-            if (json.styles.textPosition[1] == 'middle') {
-                y = 'top';
+            if (json.styles.textPosition[1] == 'middle') { //if variable 1 is middle, do this
+                y = 'top'; //force positioning to top
                 transformY = "-50%";
                 css[y] = "50%"
             }
-              else {
-                y = json.styles.textPosition[1];
+              else { //otherwise top and bottom positioning will be the same (zero)
+                y = json.styles.textPosition[1]; //get 'top' or 'bottom'
                 transformY = "0px";
                 css[y] = "0px"
               }
@@ -203,6 +207,12 @@ pageModules.jsonParse = function(jsonPrep, parent) {
             $(textChildren).css(css);
           }
         }
+
+        //Text Alignment Styles
+        if (json.styles.hasOwnProperty('textAlign') && json.styles.textAlign != "") {
+          var textChildren = $(parent).find('.notion-text__children').css('textAlign', json.styles.textAlign);
+        }
+
 
 
 
@@ -220,7 +230,7 @@ pageModules.jsonParse = function(jsonPrep, parent) {
 
 /* Search the page for a json string, pass it to JSON parse */
 pageModules.search = function() {
-    $('.notion-root .notion-text').each(function(index) {
+    $('.notion-root .notion-text').each(function(index) { //search for special modules
         
         var sV = '!${'; // search variable
         
@@ -242,6 +252,8 @@ pageModules.search = function() {
         else return;
         
     })
+
+    $('.notion-root .notion-callout').has('.notion-semantic-string > span:only-child a').addClass('contains-link');
     
     /* Add Images to Lightbox */
     //pageModules.lightbox = [];
@@ -278,7 +290,9 @@ var navload = function() {
   var navlist = $('<ul class="navlist"></ul>');
   
   var linkListCont = $('<li class="linklistcont"></li>');
-  var linkList = $('<ul class="linklist"></ul>');
+  var linkList = $('<ul class="linklist"></ul>').click(function() {
+    $(this).removeClass('visible');
+  });
   
 
   // Link List Parser
