@@ -392,7 +392,31 @@ const observer = new MutationObserver(function() {
 }
 
 var addFacebook = function() {
-    $('body').prepend('<!-- Load Facebook SDK for JavaScript --><div id="fb-root"></div><script>window.fbAsyncInit = function() {FB.init({xfbml: true,version: \'v9.0\'});};(function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = \'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js\'; fjs.parentNode.insertBefore(js, fjs);      }(document, \'script\', \'facebook-jssdk\'));</script><!-- Your Chat Plugin code --><div class="fb-customerchat" attribution="setup_tool" page_id="50345695255" theme_color="#24afff" logged_in_greeting="Hi! What kind of video are you trying to make?" logged_out_greeting="Hi! What kind of video are you trying to make?"></div>')
+    $('body').prepend(`
+<div id="fb-root"></div>
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        xfbml            : true,
+        version          : 'v10.0'
+      });
+    };
+
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+  </script>
+
+  <!-- Your Chat Plugin code -->
+  <div class="fb-customerchat"
+    attribution="setup_tool"
+    page_id="50345695255">
+  </div>
+`)
 }
 
 /* First Page Load */
