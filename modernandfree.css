@@ -23,7 +23,7 @@ h1, h2, h3, .notion-header__title,
     line-height:1em !important;
 }
 h1 .notion-semantic-string {
-    font-size:6vh !important;
+    font-size:5.5vh !important;
     line-height:1.1em !important;
     letter-spacing:2px;
 }
@@ -320,11 +320,22 @@ Header
 }
     .notion-header__cover.has-cover div {
         height:100%;
-    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 20%, rgba(0,0,0,.1) 80%);
-    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 20%, rgba(0,0,0,.1) 80%);
-    position:absolute;
-    top:0px;
-    left:0px;
+        mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 20%, rgba(0,0,0,.1) 80%);
+        -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 20%, rgba(0,0,0,.1) 80%);
+        position:absolute;
+        top:0px;
+        left:0px;
+    }
+    .notion-header__cover.has-cover div:before {
+        content:"";
+        height:100%;
+        width:100%;
+        display:block;
+        position:absolute;
+        top:0px;
+        left:0px;
+        z-index:5;
+        background-color:transparent;
     }
 
 .notion-header.home, .contains-hero .notion-header {
@@ -419,9 +430,8 @@ Notion Elements
     cursor:default;
 }
     .notion-callout.contains-link:hover {
-        transform:scale(1.01);
+        transform:scale(1.05);
         box-shadow:0px 5px 20px var(--callout-shadowcolor);
-        border:solid 2px var(--callout-shadowcolor) !important;
     }
     
     .notion-callout.bg-default-light {
@@ -830,7 +840,7 @@ ul.notion-table-of-contents.bg-purple {
 
 .n-menunav {
     position:sticky;
-    top:calc(var(--navHeight) - 0px);
+    top:calc(var(--navHeight) - 2px);
     z-index:5;
     align-self:center;
     width:100vw;
@@ -842,7 +852,8 @@ ul.notion-table-of-contents.bg-purple {
     border-top: solid 1px var(--color-bg-lightgray);
     border-bottom: solid 1px var(--color-bg-gray);
     transition:none !important;
-    margin-bottom:50px !important;
+    margin-bottom:0px !important;
+    margin-top:0px !important;
 }
 .n-menunav > p {
     display: none;
@@ -1245,7 +1256,7 @@ ul.notion-table-of-contents.bg-purple {
     //filter:blur(2px);
     border:0px !important;
 }
-.n-backgroundimage > div {
+.n-backgroundimage > div.notion-image {
     display:block;
     height:100%;
     width:100%;
@@ -1253,7 +1264,11 @@ ul.notion-table-of-contents.bg-purple {
     padding:0px;
     margin:0px;
 }
-    .n-backgroundimage > div > div {
+    .n-backgroundimage > div.notion-image div {
+        height: 100% !important;
+        width:100% !important;
+    }
+    .n-backgroundimage > div.notion-image div > div {
         display:none;
     }
 
@@ -1454,15 +1469,15 @@ ul.notion-table-of-contents.bg-purple {
 
     /* Secondary Navigation */
     .n-menunav {
-        position:fixed;
+        position:relative;
         left:0px;
         display:block;
-        top:var(--navHeight);
+        top: unset;
         z-index:13;
         margin-bottom:0px !important;
     }
     .n-menunav .notion-text__children {
-        padding:20px 12px 20px 12px !important;
+        padding:10px 12px 10px 12px !important;
     }
     .n-menunav .notion-text__children .notion-text:not(.bg-pink) {
         width:100%;
@@ -1474,10 +1489,12 @@ ul.notion-table-of-contents.bg-purple {
 
     /* Table of Contents */
     ul.notion-table-of-contents.bg-purple {
-        top:calc(var(--navHeight)*2);
+        position:relative;
+        top: unset;
         bottom:unset;
-        border-radius:0px 0px 10px 10px;
+        border-radius:10px;
         padding:20px 25px;
+        margin:10px 0px !important;
         backdrop-filter: blur(10px);
         background-color:rgba(0,0,0,.8);
     }
