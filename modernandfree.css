@@ -18,7 +18,7 @@ h1, h2, h3, .notion-header__title,
     font-weight: 600 !important;
     font-style:normal;
 }
-.notion-header__title, .notion-image.full-width .notion-caption, .bg-purple .notion-heading span{
+.notion-header__title, .notion-image.full-width .notion-caption {
     font-size:6vh !important;
     line-height:1em !important;
 }
@@ -118,6 +118,10 @@ strong {
 }
 article > .notion-image.page-width img {
     border-radius:15px;
+}
+
+.notion-embed__container > iframe {
+  background-color: transparent !important;
 }
 /*img:hover {
     cursor:zoom-in;
