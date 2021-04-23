@@ -491,11 +491,14 @@ cookies.check = function() {
 }
 
 /* First Page Load */
-window.addEventListener('load', (event) => {
-    cookies.check();
+$( document ).ready(function() { //On Document Ready
     loadLoad();
+    cookies.check();
     navload();
     footerLoad();
+});
+
+window.addEventListener('load', (event) => {
     pageModules.loadLightbox();
     pageModules.search();
     addMutationListener();
