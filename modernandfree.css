@@ -178,6 +178,7 @@ body div#__next > div {
     opacity:0;
     z-index:-50;
     transform: translateY(-50%) translateX(-50%) scale(.8);
+    transition-delay: 0s;
 }
 
 /* Cookies Dialogue */
