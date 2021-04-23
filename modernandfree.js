@@ -2,7 +2,7 @@
 
 (()=>{
 function createElementFromHTML(htmlString) {
-  var div = document.createElement('div');
+  var div = document.createElement('div')
   div.innerHTML = htmlString.trim();
 
   // Change this to div.childNodes to support multiple top-level nodes
@@ -369,6 +369,28 @@ var footerLoad = function() {
   }
 }
 
+//Create a module that shows the page loading status
+var loadLoad = function() {
+  var loadContainer = $('<div id="n-loadingcontainer"></div>');
+
+  //Get the logo
+  var logo;
+  if(typeof(nConfig) != undefined) {
+    logo = nConfig.navbarLogo;
+  }
+
+  var logoContainer = $('<div id="n-loadinglogo">'+ logo +'</div>')
+
+  var loadText = "Loading...";
+  var textContainer = $('<div id="n-loadingtext"><span>'+loadText+'</span></div>');
+  
+  $(loadContainer).append(logoContainer);
+  $(loadContainer).append(textContainer);
+  
+  $('body').prepend(loadContainer);
+
+
+}
 
 
 /* This will use MutationObserver to observe the header for any changes; detecting a page load. */
@@ -419,8 +441,59 @@ var addFacebook = function() {
 `)
 }
 
+var cookies = {};
+cookies.name ="cookieconsent_status=true";
+cookies.get = function() {
+  var name = cookies.name;
+  var ca = document.cookie.split(';');
+  for(var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return true;
+    }
+  }
+  return false;
+}
+cookies.set = function(){
+  document.cookie = cookies.name + "; expires=Thu, 28 Dec 2023 12:00:00 UTC; path=/";
+}
+cookies.check = function() {
+  //console.log('checking for cookies')
+  if(!cookies.get()) {
+    var cookieWarningContainer = $('<div id="n-cookiewarning">');
+    $('body').append(cookieWarningContainer);
+
+    var cookieWarningHeader = $('<h1>Nysics uses cookies.</h1>');
+    var cookieWarningBody = $('<div><p>By using the Nysics website, you consent to use of cookies to enhance your experience.</p></div>');
+
+    var buttonLearnMore = $('<a href="/cookies" class="link notion-link">Learn More</a>')
+    var buttonAccept = $('<a class="link highlight filled notion-link">Accept</a>').click(function() {
+      cookies.set(); 
+      $(cookieWarningContainer).remove();
+      });
+
+    var textContainer = $('<div id="n-cookieBody"></div>');
+      $(textContainer).append(cookieWarningHeader);
+      $(textContainer).append(cookieWarningBody);
+
+    var linksContainer = $('<div id="n-cookieLinks"></div>');
+      $(linksContainer).append(buttonLearnMore);
+      $(linksContainer).append(buttonAccept);
+
+    
+    $(cookieWarningContainer).append(textContainer);
+    $(cookieWarningContainer).append(linksContainer);
+
+  }
+}
+
 /* First Page Load */
 window.addEventListener('load', (event) => {
+    cookies.check();
+    loadLoad();
     navload();
     footerLoad();
     pageModules.loadLightbox();
