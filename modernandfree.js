@@ -494,11 +494,11 @@ cookies.check = function() {
 $( document ).ready(function() { //On Document Ready
     loadLoad();
     cookies.check();
-    navload();
-    footerLoad();
 });
 
 window.addEventListener('load', (event) => {
+    navload();
+    footerLoad();
     pageModules.loadLightbox();
     pageModules.search();
     addMutationListener();
