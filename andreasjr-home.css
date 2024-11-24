@@ -2,90 +2,109 @@
 
 /* Hide blocks */
 div[data-block-id="13819069-96c0-8022-8fb8-dc365f09728d"],
-div[data-block-id="13819069-96c0-80f2-8cc4-eef955059d1b"]
-{
-  display: none !important;
+div[data-block-id="13819069-96c0-80f2-8cc4-eef955059d1b"] {
+	display: none !important;
 }
 
 :root {
-  --navbar--offset: 44px;
-  --color-primary: #1F2730;
+	--navbar--offset: 44px;
+	--color-primary: #1F2730;
 }
-body.notion-body, html.notion-html, #notion-app, main {
-  overflow: unset !important;
-  height: auto !important;
+
+body.notion-body,
+html.notion-html,
+#notion-app,
+main {
+	overflow: unset !important;
+	height: auto !important;
 }
+
+#notion-app {
+	min-height: 100vh;
+}
+
 .notion-cursor-listener {
-  width: unset !important;
+	width: unset !important;
 }
+
 .notion-scroller.vertical {
-  overflow: visible !important;
+	overflow: visible !important;
 }
 
 .notion-app-inner {
-  font-family: "Noto Sans", sans-serif !important;
+	font-family: "Noto Sans", sans-serif !important;
 }
+
 h1 {
-  text-align: center;
-  div:has(> &) {
-	width:100%;
-  }
+	text-align: center;
+
+	div:has(> &) {
+		width: 100%;
+	}
 }
+
 :where(h1, h2, h3, h4, h5, h6) {
-  font-family: "Krona One", sans-serif !important;
+	font-family: "Krona One", sans-serif !important;
 }
-html, body, main.notion-frame, .notion-topbar-mobile, footer {
-  background-color: var(--color-primary) !important;
+
+html,
+body,
+main.notion-frame,
+.notion-topbar-mobile,
+footer {
+	background-color: var(--color-primary) !important;
 }
+
 main.notion-frame {
-  padding-top: var(--navbar--offset);
-  min-height: 100vh;
+	padding-top: var(--navbar--offset);
+	min-height: 100vh;
 }
 
 header {
-  position: fixed;
-  left: 0;
-  right: 0;
-  top:0;
-  background: transparent !important;
-  backdrop-filter: blur(20px) brightness(0.8);
-  -webkit-backdrop-filter: blur(20px) brightness(0.8);
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	background: transparent !important;
+	backdrop-filter: blur(20px) brightness(0.8);
+	-webkit-backdrop-filter: blur(20px) brightness(0.8);
 }
 
-header .shadow-cursor-breadcrumb > :not(:first-child),
+header .shadow-cursor-breadcrumb> :not(:first-child),
 .hide-scrollbar,
 div[aria-label*="Show/close details panel"],
-div[aria-label="View/hide details"]
-{
-  display: none !important;
+div[aria-label="View/hide details"] {
+	display: none !important;
 }
 
 :is(.notion-record-icon):not(:has(+ div)) {
-  margin-left: auto !important;
-  margin-right: auto !important;
+	margin-left: auto !important;
+	margin-right: auto !important;
 }
 
 /* Add padding to property area */
 .layout-content:nth-last-child(2) {
-  padding-bottom: 5rem !important;
+	padding-bottom: 5rem !important;
 }
+
 .layout-content.layout-content-with-divider:not(:nth-last-child(2)) h1 {
-  margin-bottom: 2rem !important;
+	margin-bottom: 2rem !important;
 }
 
-div.layout-full { 
-  position: relative;
-  z-index: -1;
+div.layout-full {
+	position: relative;
+	z-index: -1;
 
-  /** Header image */
-  & > div > div > div:nth-child(1) > div > div > img {
-	filter: blur(20px);
-	max-height: unset !important;
-	height: 85vh !important;
-	mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.00) 100%, #FFF 100%);
-	margin-top: calc( -2 * var(--navbar--offset) );
-  }
+	/** Header image */
+	&>div>div>div:nth-child(1)>div>div>img {
+		filter: blur(20px);
+		max-height: unset !important;
+		height: 85vh !important;
+		mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.00) 100%, #FFF 100%);
+		margin-top: calc(-2 * var(--navbar--offset));
+	}
 }
+
 /*[aria-label="Page properties"] {
   display: none !important;
 
@@ -94,35 +113,51 @@ div.layout-full {
   }
 }*/
 .layout-content-with-divider {
-  border-bottom: none !important;
+	border-bottom: none !important;
 }
+
 .notion-page-view-discussion,
 [aria-label="Open comments"] {
-  display: none !important;
+	display: none !important;
 }
 
 .notion-page-content {
-  gap: 1.875rem !important;
+	gap: 1.875rem !important;
 
-  & > :where(
-	.notion-bulleted_list-block + .notion-bulleted_list-block,
-	.notion-toggle-block + .notion-toggle-block
-  ) {
-	margin-top: -1.875rem !important;
-  }
+	&> :where(.notion-bulleted_list-block + .notion-bulleted_list-block,
+		.notion-toggle-block + .notion-toggle-block) {
+		margin-top: -1.875rem !important;
+	}
 }
 
 footer {
-  width: 100%;
-  padding: 0rem 2rem 5rem 2rem;
-  color: #FFFFFF;
+	width: 100%;
+	padding: 0rem 2rem 5rem 2rem;
+	color: #FFFFFF;
 
-  .content {
-	max-width: 708px;
-	margin: 0px auto;
-  }
+	.content {
+		max-width: 708px;
+		margin: 0px auto;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+
+		@media screen and (max-width: 768px) {
+			flex-direction: column;
+		}
+	}
+
+	.col {
+		flex-basis: 33%;
+		display: flex;
+		flex-direction: column;
+	}
+
+	img.logo {
+		width: 100px;
+	}
 }
 
 aside:has(> div > div > .notion-update-sidebar) {
-  display: none;
+	display: none;
 }
