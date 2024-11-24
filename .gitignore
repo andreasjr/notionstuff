@@ -1,0 +1,60 @@
+#
+# All instances of THEME_NAME should be replaced with your theme's directory name and PLUGIN_NAME should be replaced with any plugin directory name that should be tracked.
+# Additional path exclusions should be made as needed for each project.
+#
+
+# Ignore everything in the root except the "wp-content" directory.
+!.gitignore
+!.gitattributes
+!README.md
+
+.ftpssh_settings
+.ftpquota
+.DS_Store
+.project
+.buildpath
+.htaccess
+.settings
+.revision
+database.sql
+/*.sql
+.sucuriquarantine
+/sql/
+/robots.txt
+.errordocs/
+
+# large/disallowed file types
+# a CDN should be used for these
+*.hqx
+*.bin
+*.exe
+*.dll
+*.deb
+*.dmg
+*.iso
+*.img
+*.msi
+*.msp
+*.msm
+*.mid
+*.midi
+*.kar
+*.mp3
+*.ogg
+*.m4a
+*.ra
+*.3gpp
+*.3gp
+*.mp4
+*.mpeg
+*.mpg
+*.mov
+*.webm
+*.flv
+*.m4v
+*.mng
+*.asx
+*.asf
+*.wmv
+*.avi
+*.zip
