@@ -2,49 +2,17 @@
 
 /* Hide blocks */
 div[data-block-id="13819069-96c0-8022-8fb8-dc365f09728d"],
-div[data-block-id="13819069-96c0-80f2-8cc4-eef955059d1b"] {
+div[data-block-id="13819069-96c0-80f2-8cc4-eef955059d1b"]
+{
 	display: none !important;
 }
 
 :root {
 	--navbar--offset: 44px;
 	--color-primary: #1F2730;
-}
-
-body.notion-body,
-html.notion-html,
-#notion-app,
-main {
-	overflow: unset !important;
-	height: auto !important;
-}
-
-#notion-app {
-	min-height: 100vh;
-}
-
-.notion-cursor-listener {
-	width: unset !important;
-}
-
-.notion-scroller.vertical {
-	overflow: visible !important;
-}
-
-.notion-app-inner {
-	font-family: "Noto Sans", sans-serif !important;
-}
-
-h1 {
-	text-align: center;
-
-	div:has(> &) {
-		width: 100%;
-	}
-}
-
-:where(h1, h2, h3, h4, h5, h6) {
-	font-family: "Krona One", sans-serif !important;
+	--block-gap: 1.875rem;
+	--font-family--body: "Noto Sans", sans-serif;
+	--font-family--heading: "Krona One", sans-serif;
 }
 
 html,
@@ -55,9 +23,57 @@ footer {
 	background-color: var(--color-primary) !important;
 }
 
-main.notion-frame {
-	padding-top: var(--navbar--offset);
+body.notion-body,
+html.notion-html,
+#notion-app,
+main {
+	/* overflow: unset !important; */
+	/* height: auto !important; */
+}
+
+
+/* Hide elements */
+header .shadow-cursor-breadcrumb> :not(:first-child),
+div[aria-label*="Show/close details panel"],
+div[aria-label="View/hide details"],
+.notion-page-controls {
+	display: none !important;
+}
+
+/* #notion-app {
 	min-height: 100vh;
+} */
+
+.notion-cursor-listener {
+	/* width: unset !important; */
+}
+
+/* .notion-scroller.vertical {
+	overflow: visible !important;
+} */
+
+.notion-app-inner {
+	font-family: var(--font-family--body) !important;
+}
+
+:where(h1, h2, h3, h4, h5, h6) {
+	font-family: var(--font-family--heading) !important;
+}
+
+h1 {
+	text-align: center;
+
+	div:has(> &) {
+		width: 100%;
+	}
+}
+
+main.notion-frame {
+	@media screen and (min-width: 769px) {
+		padding-top: var(--navbar--offset);
+	}
+	/* min-height: 100vh; */
+	flex-grow: 1 !important;
 }
 
 header {
@@ -69,18 +85,38 @@ header {
 	backdrop-filter: blur(20px) brightness(0.8);
 	-webkit-backdrop-filter: blur(20px) brightness(0.8);
 }
-
-header .shadow-cursor-breadcrumb> :not(:first-child),
-.hide-scrollbar,
-div[aria-label*="Show/close details panel"],
-div[aria-label="View/hide details"] {
-	display: none !important;
-}
-
-:is(.notion-record-icon):not(:has(+ div)) {
+/* Regular page header icon */
+div:has( > .notion-record-icon ):not(:has(.notion-collection_view_page-block)) .notion-record-icon {
 	margin-left: auto !important;
 	margin-right: auto !important;
 }
+
+/* Database title */
+div:has( > .notion-record-icon ):has(.notion-collection_view_page-block) {
+	flex-direction: column !important;
+	align-items: center !important;
+	gap: var(--block-gap) !important;
+	position: relative;
+	z-index: 5;
+	padding-bottom: var(--block-gap);
+	padding-top: var(--block-gap);
+
+	.notion-record-icon img {
+		height: 78px !important;
+		width: 78px !important;
+	}
+	h1 {
+		font-size: 2.5rem !important;
+	}
+}
+
+/* Database Description */
+div:has(>div[placeholder="Add a description…"]) {
+	text-align: center;
+	padding-bottom: var(--block-gap);
+	justify-content: center;
+}
+
 
 /* Add padding to property area */
 .layout-content:nth-last-child(2) {
@@ -95,14 +131,17 @@ div.layout-full {
 	position: relative;
 	z-index: -1;
 
-	/** Header image */
-	&>div>div>div:nth-child(1)>div>div>img {
-		filter: blur(20px);
-		max-height: unset !important;
-		height: 85vh !important;
-		mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.00) 100%, #FFF 100%);
-		margin-top: calc(-2 * var(--navbar--offset));
-	}
+}
+/** Header image */
+div.layout-full>div>div>div:nth-child(1)>div>div>img,
+.notion-scroller > div > .pseudoSelection img:not(
+	[alt="Page icon"]
+) {
+	filter: blur(20px);
+	max-height: unset !important;
+	height: 85vh !important;
+	mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.00) 100%, #FFF 100%);
+	/* margin-top: calc(-2 * var(--navbar--offset)); */
 }
 
 /*[aria-label="Page properties"] {
@@ -122,13 +161,35 @@ div.layout-full {
 }
 
 .notion-page-content {
-	gap: 1.875rem !important;
+	&,
+	.notion-column_list-block .notion-column-block,
+	.notion-toggle-block > div > div:nth-child(2) > div:nth-child(2) > div {
+		gap: var(--block-gap) !important;
+	}
 
-	&> :where(.notion-bulleted_list-block + .notion-bulleted_list-block,
-		.notion-toggle-block + .notion-toggle-block) {
-		margin-top: -1.875rem !important;
+	/** Add padding to title portion of toggle block */
+	.notion-toggle-block > div > div:nth-child(2):has(> div:nth-child(2)) > div:nth-child(1) > div {
+		padding-bottom: var(--block-gap) !important;
+	}
+
+	/* Remove block gaps between same blocks */
+	& > :where(
+		.notion-bulleted_list-block
+	) + :where(
+		.notion-bulleted_list-block
+	)
+	{
+		margin-top: calc( -1 * var(--block-gap) ) !important;
+	}
+	div[placeholder="Write a caption…"] {
+		text-align: center;
 	}
 }
+
+
+/* aside:has(> div > div > .notion-update-sidebar) {
+	display: none;
+} */
 
 footer {
 	width: 100%;
@@ -158,6 +219,11 @@ footer {
 	}
 }
 
-aside:has(> div > div > .notion-update-sidebar) {
-	display: none;
+/* Homepage styles */
+div[data-block-id="f6a87184-dc71-4f41-afc4-2f66df49e92c"]:not(.notion-page-block),
+div.layout-content:has( div[data-block-id="f6a87184-dc71-4f41-afc4-2f66df49e92c"] ) .notion-record-icon {
+	display: none !important;
+}
+div[data-block-id="3fbb8214-8ef6-496c-879f-46015de25805"] {
+	text-align: center;
 }

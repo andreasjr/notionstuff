@@ -1,6 +1,6 @@
 window.addEventListener('load', () => {
-	// closeSidebar();
-	createFooter();
+	closeSidebar();
+	// createFooter();
 });
 
 function closeSidebar() {
