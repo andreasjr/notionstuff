@@ -227,3 +227,9 @@ div.layout-content:has( div[data-block-id="f6a87184-dc71-4f41-afc4-2f66df49e92c"
 div[data-block-id="3fbb8214-8ef6-496c-879f-46015de25805"] {
 	text-align: center;
 }
+/* Social icons */
+div[data-block-id="15119069-96c0-8092-b455-d1d48ef4bb6c"] {
+	div[role="button"] {
+		margin: 0 auto;
+	}
+}
