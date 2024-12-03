@@ -219,10 +219,33 @@ footer {
 	}
 }
 
-/* Homepage styles */
-div[data-block-id="f6a87184-dc71-4f41-afc4-2f66df49e92c"]:not(.notion-page-block),
-div.layout-content:has( div[data-block-id="f6a87184-dc71-4f41-afc4-2f66df49e92c"] ) .notion-record-icon {
+/* Tables */
+.notion-gallery-view [data-sticky-attach-point="ceiling"] [style*="background: rgb(25, 25, 25);"] {
+	background-color: transparent !important;
+}
+[style*="box-shadow: rgb(47, 47, 47) 0px 1px 0px;"] {
+	box-shadow: none !important;
+}
+[style*="border-top: 1px solid rgb(47, 47, 47);"] {
+	border-top: none !important;
+}
+div[role="tablist"] + div, :where(.notion-collection_view_page-block, .notion-collection_view-block) + div {
 	display: none !important;
+}
+
+/* Homepage styles */
+.notion-scroller {
+	div[data-block-id="f6a87184-dc71-4f41-afc4-2f66df49e92c"],
+	div.layout-content:has( div[data-block-id="f6a87184-dc71-4f41-afc4-2f66df49e92c"] ) .notion-record-icon,
+	.notion-collection_view-block:where(
+		[data-block-id="14919069-96c0-806f-aa2e-dd641a7c0390"],
+		[data-block-id="14919069-96c0-80ea-88db-f916f35a8836"],
+		[data-block-id="14919069-96c0-8081-b7ad-ff07eb0dd2d1"],
+		[data-block-id="15119069-96c0-804e-9fe6-c431b9013960"],
+		[data-block-id="14919069-96c0-8041-a8f1-d50309ac21fb"]
+	) [role="tablist"] {
+		display: none !important;
+	}
 }
 div[data-block-id="3fbb8214-8ef6-496c-879f-46015de25805"] {
 	text-align: center;
